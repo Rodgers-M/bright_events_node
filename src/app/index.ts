@@ -1,8 +1,8 @@
 import express from 'express';
-// import morgan from 'morgan';
+import morgan from 'morgan';
 import { createConnection } from 'typeorm';
 import logger from '../util/logger';
-// import { LoggerStream } from '../util/logger';
+import { LoggerStream } from '../util/logger';
 import applyRoutes from './routes/index';
 
 class App {
@@ -15,10 +15,11 @@ class App {
   }
 
   private config(): void {
+    if (this.app.get('env') === 'development') {
+      this.app.use(morgan('dev', { stream : new LoggerStream() }));
+    }
     this.app.use(express.json());
     applyRoutes(this.app);
-    // TODO : figure out how to use morgan and winston to log app requests
-    // this.app.use(morgan('combined', { stream : new LoggerStream() }));
   }
 
   private async connectDb(): Promise<void> {

@@ -1,9 +1,13 @@
 import { Router } from 'express';
-import { createUser } from '../services/user';
+import logger from '../../util/logger';
+// import { createUser } from '../services/user';
 
 const userRouter: Router = Router();
 
-userRouter.post('/users', createUser);
+userRouter.post('/users', (req, res) => {
+  logger.info('req body', req.body);
+  res.json({message: 'your request has been recieved'});
+});
 userRouter.get('/users', (req, res) => res.json({message: 'users found'}));
 
 export default userRouter;

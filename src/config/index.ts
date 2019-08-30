@@ -1,5 +1,5 @@
-import * as joi from '@hapi/joi';
-import * as dotenv from 'dotenv';
+import joi from '@hapi/joi';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -27,14 +27,16 @@ if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
-const config = {
+export const config = {
   env: envVars.NODE_ENV || 'development',
   port: envVars.PORT,
-  databaseName: envVars.DATABASE,
+  dbName: envVars.DATABASE,
   testDbName: envVars.TEST_DB,
   dbUsername: envVars.DATABASE_USER,
-  databaseDialect: envVars.DATABASE_DIALECT,
+  dbDialect: envVars.DATABASE_DIALECT,
   dbPassword: envVars.DATABASE_PASSWORD,
   databaseUrl: envVars.DATABASE_URL,
   host: envVars.HOST,
 };
+
+export default config;

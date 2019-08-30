@@ -12,17 +12,25 @@
     "build": "tsc",
     "prestart": "yarn run build",
     "start": "node .",
-    "start:dev": "nodemon --exec ts-node src/index.ts",
+    "start:dev": "tsc-watch --onSuccess \"node ./dist/index.js\"",
+    "migrations:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "migrations:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@hapi/joi": "^15.1.1",
+    "@types/app-root-path": "^1.2.4",
+    "@types/dotenv": "^6.1.1",
+    "@types/hapi__joi": "^15.0.3",
+    "@types/morgan": "^1.7.37",
     "app-root-path": "^2.2.1",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "morgan": "^1.9.1",
     "pg": "^7.12.1",
     "reflect-metadata": "^0.1.13",
+    "stream": "^0.0.2",
+    "tsc-watch": "^2.4.0",
     "typeorm": "^0.2.18",
     "winston": "^3.2.1"
   },
@@ -32,6 +40,7 @@
     "nodemon": "^1.19.1",
     "ts-node": "^8.3.0",
     "tslint": "^5.19.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "typescript-tslint-plugin": "^0.5.4"
   }
 }

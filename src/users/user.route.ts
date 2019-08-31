@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import logger from '../../util/logger';
-// import { createUser } from '../services/user';
+import logger from '../util/logger';
+// import { createUser } from './user.service';
 
 const userRouter: Router = Router();
 

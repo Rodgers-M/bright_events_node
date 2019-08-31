@@ -1,8 +1,8 @@
-const { DATABASE_DIALECT, DATABASE_USER, HOST, DATABASE, DATABASE_PASSWORD } = process.env;
+const { DATABASE_DIALECT, DATABASE_USER, DB_HOST, DATABASE, DATABASE_PASSWORD } = process.env;
 
 module.exports = {
   type: DATABASE_DIALECT,
-  host: HOST,
+  host: DB_HOST,
   port: 5432,
   username: DATABASE_USER,
   password: DATABASE_PASSWORD,
@@ -10,7 +10,7 @@ module.exports = {
   synchronize: true,
   logging: process.env.NODE_ENV ? 'development' : false,
   entities: [
-      'dist/database/entity/**/*.js'
+    'dist/**/*.model.js'
    ],
    migrations: [
       'src/database/migration/**/*.ts'

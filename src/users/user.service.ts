@@ -1,5 +1,5 @@
 import { getConnection } from 'typeorm';
-import { User } from '../../database/entity/user';
+import { User } from './user.model';
 
 export const createUser = async () => {
   const userRepo = await getConnection().getRepository(User);

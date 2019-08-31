@@ -1,9 +1,9 @@
 import express from 'express';
 import morgan from 'morgan';
 import { createConnection } from 'typeorm';
-import logger from '../util/logger';
-import { LoggerStream } from '../util/logger';
-import applyRoutes from './routes/index';
+import applyRoutes from './index.route';
+import logger from './util/logger';
+import { LoggerStream } from './util/logger';
 
 class App {
   public app: express.Application;

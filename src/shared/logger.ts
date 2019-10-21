@@ -11,21 +11,16 @@ const logOptions = {
     maxFiles: 5,
     colorize: false,
   },
-  console: {
-    level: 'debug',
-    handleExceptions: true,
-    json: false,
-    colorize: true,
-  },
 };
 
 const logger = createLogger({
-  defaultMeta: { service: 'user-service' },
-  format: format.json(),
-  level: 'info',
+  format: format.combine(
+    format.timestamp(),
+    format.json(),
+    format.colorize()
+  ),
   transports: [
     new transports.File(logOptions.file),
-    new transports.Console(logOptions.console)
   ],
   exitOnError: false,
 });

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import logger from '../util/logger';
+import logger from '../../shared/logger';
 // import { createUser } from './user.service';
 
 const userRouter: Router = Router();

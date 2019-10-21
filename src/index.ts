@@ -1,8 +1,8 @@
 import app from './app';
-import config from './config';
-import logger from './util/logger';
+import { getConfig } from './config/config';
+import logger from './shared/logger';
 
-const { port } = config;
+const { port } = getConfig();
 app.listen( port, () => {
     logger.info( `Application magic happening on port: ${ port }` );
 } );

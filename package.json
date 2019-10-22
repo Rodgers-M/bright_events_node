@@ -13,9 +13,9 @@
     "prestart": "npm run build",
     "start": "node .",
     "start:dev": "tsc-watch --onSuccess \"node ./dist/index.js\"",
-    "db:migrate:make": "ts-node -P ./tsconfig.json $(npm bin)/knex migrate:make -x ts --knexfile ./src/database/knexfile.ts",
-    "db:migrate": "ts-node -P ./tsconfig.json $(npm bin)/knex migrate:latest --knexfile ./src/database/knexfile.ts",
-    "db:migrate:rollback": "ts-node -P ./tsconfig.json $(npm bin)/knex migrate:rollback --knexfile ./src/database/knexfile.ts",
+    "db:migrate:make": "env-cmd ts-node -P ./tsconfig.json $(npm bin)/knex migrate:make -x ts --knexfile ./src/database/knexfile.ts",
+    "db:migrate": "env-cmd  ts-node -P ./tsconfig.json $(npm bin)/knex migrate:latest --knexfile ./src/database/knexfile.ts",
+    "db:migrate:rollback": "env-cmd ts-node -P ./tsconfig.json $(npm bin)/knex migrate:rollback --knexfile ./src/database/knexfile.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

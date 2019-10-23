@@ -15,29 +15,26 @@ if (envConfig.env !== 'test' || envConfig.db.testDbName !== 'bright-events-test'
 
 const config: Config = configs[envConfig.env];
 
-// const knexCleanerOptions = {
-    // ignoreTables: [
-        // 'knex_migrations',
-        // 'knex_migrations_lock',
-    // ],
-// };
+const knexCleanerOptions = {
+    ignoreTables: [
+        'knex_migrations',
+        'knex_migrations_lock',
+    ],
+};
 
 export function describeDbTestSuite(name: string, func: (knex: Knex) => void): void {
     describe(name, () => {
         beforeAll(async () => {
-            await knexInstance.migrate.rollback(config.migrations, true);
-            await knexInstance.migrate.latest(config.migrations);
+          await knexInstance.migrate.rollback(config.migrations, true);
+          await knexInstance.migrate.latest(config.migrations);
         });
 
         beforeEach(async () => {
-            // We need to rollback fully, if you terminate tests
-            // prematurely you might have stuff left in the DB.
-            await knexInstance.migrate.rollback(config.migrations, true);
-            await knexInstance.migrate.latest(config.migrations);
+          await knexCleaner.clean(knexInstance, knexCleanerOptions);
         });
 
         afterEach(async () => {
-            await knexInstance.migrate.rollback(config.migrations, true);
+          await knexCleaner.clean(knexInstance, knexCleanerOptions);
         });
 
         afterAll(async () => {

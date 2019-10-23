@@ -15,10 +15,11 @@ async function createAccountsTable(knex: Knex): Promise<void> {
         .primary()
         .defaultTo(knex.raw('uuid_generate_v4()'));
 
-      table.string('username')
+      table.string('email')
+        .unique()
         .notNullable();
 
-      table.string('email')
+      table.string('password')
         .notNullable();
 
     });

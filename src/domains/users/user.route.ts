@@ -1,13 +1,14 @@
 import { Router } from 'express';
-import logger from '../../shared/logger';
-// import { createUser } from './user.service';
+import { UserService } from './user.service';
+import { protectedAsyncRequestHandler } from '../../util/protectedAsyncHandler';
 
-const userRouter: Router = Router();
+export function getUserRouter(): Router {
+  const userRouter: Router = Router();
 
-userRouter.post('/users', (req, res) => {
-  logger.info('req body', req.body);
-  res.json({message: 'your request has been recieved'});
-});
-userRouter.get('/users', (req, res) => res.json({message: 'users found'}));
+  userRouter.post('/signup', protectedAsyncRequestHandler( async (req, res) => {
+    await UserService.create(req.body);
+    res.status(200).send('success');
+  } ));
 
-export default userRouter;
+  return userRouter;
+}

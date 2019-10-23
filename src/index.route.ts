@@ -1,8 +1,8 @@
 import { Application } from 'express';
-import userRouter from './domains/users/user.route';
+import { getUserRouter } from './domains/users/user.route';
 
 const applyRoutes = (app: Application) => {
-  app.use(userRouter);
+  app.use(getUserRouter());
 };
 
 export default applyRoutes;

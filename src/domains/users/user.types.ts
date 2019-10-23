@@ -3,6 +3,11 @@ export interface CreateAccountBody {
   password: string;
 }
 
+export interface Account {
+  id: string;
+  email: string;
+}
+
 export interface RawAccount {
   id: string;
   email: string;

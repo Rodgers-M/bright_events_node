@@ -20,26 +20,44 @@ const envVarsSchema = joi
 .unknown()
 .required();
 
-export const getConfig = () => {
-  const { error, value: envVars } = joi.validate(process.env, envVarsSchema);
+type NodeEnv = 'development'| 'staging' | 'production' | 'test' | 'local';
 
-  if (error) {
-    throw new Error(`Config validation error: ${error.message}`);
-  }
-
-  const config = {
-    env: envVars.NODE_ENV || 'development',
-    port: envVars.PORT,
-    db: {
-      name: envVars.DATABASE,
-      testDbName: envVars.TEST_DB,
-      username: envVars.DATABASE_USER,
-      dialect: envVars.DATABASE_DIALECT,
-      password: envVars.DATABASE_PASSWORD,
-      url: envVars.DATABASE_URL,
-      host: envVars.DB_HOST,
-    },
+export interface AppConfig {
+  env: NodeEnv;
+  port: number;
+  db: {
+    name: string;
+    testDbName: string;
+    username: string;
+    dialect: string;
+    password: string;
+    host: string;
   };
+}
+
+let config: AppConfig;
+export const getConfig = () => {
+  if (!config) {
+    // joi validates the env variables hence safe to cast process.env as 'any'
+    const { error, value: envVars } = joi.validate(process.env as any, envVarsSchema);
+
+    if (error) {
+      throw new Error(`Config validation error: ${error.message}`);
+    }
+
+    config = {
+      env: envVars.NODE_ENV ,
+      port: envVars.PORT,
+      db: {
+        name: envVars.DATABASE,
+        testDbName: envVars.TEST_DB,
+        username: envVars.DATABASE_USER,
+        dialect: envVars.DATABASE_DIALECT,
+        password: envVars.DATABASE_PASSWORD,
+        host: envVars.DB_HOST,
+      },
+    };
+  }
 
   return config;
 };

@@ -1,4 +1,5 @@
 import * as Knex from 'knex';
+import { addTableTimestamps } from '../addTableTimestamps';
 
 const EVENTS_TABLE_NAME = 'events';
 const RSVPS_TABLE_NAME = 'rsvps';
@@ -30,7 +31,14 @@ export  async function createEventsTable(knex: Knex): Promise<void> {
 
     table.date('rsvp_end_date')
       .nullable();
+
+    table.string('created_by')
+      .references('id')
+      .inTable(ACCOUNTS_TABLE_NAME)
+      .notNullable();
   });
+
+  await addTableTimestamps(knex, EVENTS_TABLE_NAME);
 }
 
 export  async function createRsvpsTable(knex: Knex): Promise<void> {
@@ -52,6 +60,8 @@ export  async function createRsvpsTable(knex: Knex): Promise<void> {
     table.unique(['event_id', 'account_id']);
 
   });
+
+  await addTableTimestamps(knex, RSVPS_TABLE_NAME);
 }
 
 export async function up(knex: Knex): Promise<any> {

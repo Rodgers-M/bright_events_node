@@ -1,4 +1,9 @@
 {
+  "env": {
+    "jest": true,
+    "es6": true,
+    "node": true
+  },
  "defaultSeverity": "error",
  "extends": [
      "tslint:recommended"

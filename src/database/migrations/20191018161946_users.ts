@@ -50,6 +50,8 @@ async function createProfileTable(knex: Knex): Promise<void> {
       .nullable();
 
   });
+
+  await addTableTimestamps(knex, PROFILES_TABLE);
 }
 
 export async function up(knex: Knex): Promise<any> {

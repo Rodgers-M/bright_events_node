@@ -1,8 +1,10 @@
-export interface UserRequestInterface {
-  firstName: string;
-  lastName: string;
+export interface CreateAccountBody {
   email: string;
+  password: string;
 }
-export interface UserServiceInterface {
- signup(userRequest: UserRequestInterface): Promise<string>;
+
+export interface RawAccount {
+  id: string;
+  email: string;
+  password: string;
 }

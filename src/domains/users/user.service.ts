@@ -1,10 +1,10 @@
-import { UserRequestInterface, UserServiceInterface } from './user.types';
-
-export class UserService implements UserServiceInterface {
-
-  public async signup( userRequest: UserRequestInterface): Promise<string> {
-    console.log(userRequest);
-    const name = 'myname';
-    return name;
-  }
-}
+// import { CreateAccountBody, RawAccount } from './user.types';
+//
+// interface UserService {
+  // create(params: CreateAccountBody): Promise<Readonly<RawAccount>>;
+// }
+// export class UserServiceSingleton implements UserService {
+//
+  // public async create(params: CreateAccountBody): Promise<Readonly<RawAccount>> {
+  // }
+// }

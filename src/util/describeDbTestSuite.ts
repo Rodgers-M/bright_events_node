@@ -9,7 +9,7 @@ const configs = require('../database/knexfile');
 
 const envConfig: AppConfig = getConfig();
 
-if (envConfig.env !== 'test' || envConfig.db.testDbName !== 'bright-events-test') {
+if (envConfig.env !== 'test' || envConfig.db.name !== 'bright-events-test') {
     throw Error('Not in test environment');
 }
 

@@ -19,9 +19,9 @@ const logger = createLogger({
     format.json(),
     format.colorize()
   ),
-  transports: [
-    new transports.File(logOptions.file),
-  ],
+  // transports: [
+    // new transports.File(logOptions.file),
+  // ],
   exitOnError: false,
 });
 

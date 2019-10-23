@@ -10,7 +10,6 @@ const envVarsSchema = joi
 
   // database
   DATABASE: joi.string().required(),
-  TEST_DB: joi.string().default('events_test_db'),
   DATABASE_DIALECT: joi.string().default('postgres'),
   DATABASE_PASSWORD: joi.string().default(null),
   DATABASE_USER: joi.string().required(),
@@ -27,7 +26,6 @@ export interface AppConfig {
   port: number;
   db: {
     name: string;
-    testDbName: string;
     username: string;
     dialect: string;
     password: string;
@@ -50,7 +48,6 @@ export const getConfig = () => {
       port: envVars.PORT,
       db: {
         name: envVars.DATABASE,
-        testDbName: envVars.TEST_DB,
         username: envVars.DATABASE_USER,
         dialect: envVars.DATABASE_DIALECT,
         password: envVars.DATABASE_PASSWORD,

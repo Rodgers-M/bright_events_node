@@ -3,16 +3,11 @@ import path from 'path';
 
 import { getConfig } from '../config/config';
 
-const { env, db : { name, username, password, host, testDbName } } = getConfig();
+const { env, db : { name, username, password, host} } = getConfig();
 
-let connectionString = `postgresql://${ username }:${ password }@${ host }/${ name }`;
-
-if (env === 'test') {
-  connectionString = `postgresql://${ username }:${ password }@${ host }/${ testDbName }`;
-}
 const defaultOptions: Config = {
     client: 'pg',
-    connection: connectionString,
+    connection:  `postgresql://${ username }:${ password }@${ host }/${ name }`,
     migrations: {
         directory: path.join(__dirname, 'migrations'),
     },

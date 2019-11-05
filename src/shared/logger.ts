@@ -1,5 +1,5 @@
 import appRoot from 'app-root-path';
-import { createLogger, format, transports} from 'winston';
+import winston, { createLogger, format, transports } from 'winston';
 
 const logOptions = {
   file: {
@@ -25,6 +25,7 @@ const logger = createLogger({
   exitOnError: false,
 });
 
+/* tslint:disable-next-line */
 export class LoggerStream {
   public write(message: string) {
      logger.info(message.substring(0, message.lastIndexOf('\n')));

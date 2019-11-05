@@ -57,6 +57,10 @@ export  async function createRsvpsTable(knex: Knex): Promise<void> {
       .notNullable()
       .defaultTo(false);
 
+    table.boolean('cancelled')
+      .notNullable()
+      .defaultTo(false);
+
     table.unique(['event_id', 'account_id']);
 
   });

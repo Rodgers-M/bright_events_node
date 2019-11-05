@@ -1,4 +1,4 @@
-import { describeDbTestSuite } from '../../util/describeDbTestSuite';
+import { describeDbTestSuite } from '../../test/describeDbTestSuite';
 import {RawAccount} from './user.types';
 import {UserResource} from './user.resource';
 

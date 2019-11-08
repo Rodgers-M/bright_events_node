@@ -1,4 +1,4 @@
-export interface CreateAccountBody {
+export interface AccountBody {
   email: string;
   password: string;
 }
@@ -12,4 +12,14 @@ export interface RawAccount {
   id: string;
   email: string;
   password: string;
+}
+
+export interface CreateAccountResponse {
+  message: string;
+  token: string;
+}
+
+export enum AccountLookupKey {
+  ID = 'id',
+  EMAIL = 'email'
 }

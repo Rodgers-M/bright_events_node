@@ -1,6 +1,6 @@
 import app from './app';
 import { getConfig } from './config/config';
-import logger from './shared/logger';
+import { logger } from './shared/logger';
 
 const { port } = getConfig();
 

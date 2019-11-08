@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Router } from 'express';
 import morgan from 'morgan';
 import passport from 'passport';
 import applyRoutes from './index.route';
@@ -7,22 +7,31 @@ import { globalErrorHandler } from './lib/middlewares/globalErrorHandler';
 
 class App {
   public app: express.Application;
+  public routes: Router[] = [];
 
-  constructor() {
-    this.app = express();
-    this.config();
+  public createExpressApp(): express.Application {
+    const application: express.Application = express();
+
+    application.use(express.json());
+
+    if (application.get('env') === 'development') {
+      application.use(morgan('dev', { stream : new LoggerStream() }));
+    }
+
+    application.use(passport.initialize());
+    applyRoutes(application);
+    application.use(globalErrorHandler(logger));
+
+    return application;
   }
 
-  private config(): void {
-    if (this.app.get('env') === 'development') {
-      this.app.use(morgan('dev', { stream : new LoggerStream() }));
-    }
-    this.app.use(express.json());
-    this.app.use(passport.initialize());
-    applyRoutes(this.app);
-    this.app.use(globalErrorHandler(logger));
+  public start(port: number): void {
+    const appServer = this.createExpressApp();
+    appServer.listen(port, () => {
+      logger.info(`Application running on port: ${ port }`);
+    });
   }
 
 }
 
-export default new App().app;
+export const app = new App();

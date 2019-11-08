@@ -14,8 +14,9 @@
      "quotemark": [true, "single"],
      "object-literal-sort-keys": [ false ],
      "interface-name": [true, "never-prefix"],
-    "member-ordering": [ false ],
-    "ordered-imports": [ false ]
+     "member-ordering": [ false ],
+     "ordered-imports": [ false ],
+     "whitespace": [ true, "check-module" ]
  },
  "rulesDirectory": []
 }

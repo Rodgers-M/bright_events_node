@@ -1,5 +1,5 @@
 import appRoot from 'app-root-path';
-import winston, { createLogger, format, transports } from 'winston';
+import { createLogger, format, transports } from 'winston';
 
 const logOptions = {
   file: {
@@ -13,7 +13,7 @@ const logOptions = {
   },
 };
 
-const logger = createLogger({
+const appLogger = createLogger({
   format: format.combine(
     format.timestamp(),
     format.json(),
@@ -28,14 +28,14 @@ const logger = createLogger({
 /* tslint:disable-next-line */
 export class LoggerStream {
   public write(message: string) {
-     logger.info(message.substring(0, message.lastIndexOf('\n')));
+     appLogger.info(message.substring(0, message.lastIndexOf('\n')));
   }
 }
 
 if (process.env.NODE_ENV !== 'production') {
-  logger.add(new transports.Console({
+  appLogger.add(new transports.Console({
     format: format.simple()
   }));
 }
 
-export default logger;
+export const logger = appLogger;

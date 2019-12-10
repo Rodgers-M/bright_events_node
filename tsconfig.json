@@ -12,13 +12,11 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "node_modules/*"
-      ]
+      "@events/database/*": ["src/database/*"],
+      "@events/lib/*": ["src/lib/*"],
+      "@events/config/*": ["src/config/*"],
+      "@events/shared/*": ["src/shared/*"]
     }
- },
- "include": [
-     "src/**/*"
- ]
+ }
 }
 

@@ -1,6 +1,6 @@
 import { describeDbTestSuite } from '../../test/describeDbTestSuite';
-import {RawAccount} from './user.types';
-import {UserResource} from './user.resource';
+import { RawAccount } from './user.types';
+import { UserResource } from './user.resource';
 
 describeDbTestSuite('UserResource', (knexInstance) => {
   describe('create', () => {

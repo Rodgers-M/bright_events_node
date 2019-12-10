@@ -18,10 +18,10 @@ class UserResourceSingleton implements UserResource {
     return created[0];
   }
 
-  public async getUser(lookupKey: AccountLookupKey, lookup: string): Promise<Readonly<RawAccount>> {
+  public async getUser(lookupKey: AccountLookupKey, value: string): Promise<Readonly<RawAccount>> {
     const account = knexInstance<RawAccount>(ACCOUNTS_TABLE)
     .select('*')
-    .where(lookupKey, lookup)
+    .where(lookupKey, value)
     .first();
 
     return account;

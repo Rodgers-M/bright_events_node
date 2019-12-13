@@ -14,7 +14,7 @@ export interface RawAccount {
   password: string;
 }
 
-export interface CreateAccountResponse {
+export interface AccountResponse {
   message: string;
   token: string;
 }

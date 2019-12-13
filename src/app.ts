@@ -1,11 +1,19 @@
 import express from 'express';
 import morgan from 'morgan';
 import passport from 'passport';
+import { Server } from 'http';
 import applyRoutes from './index.route';
 import { LoggerStream, logger } from './shared/logger';
 import { globalErrorHandler } from './lib/middlewares/globalErrorHandler';
 
-class App {
+export class App {
+  private appServer: Server;
+  private app: express.Application;
+
+  constructor() {
+    this.app = this.createExpressApp();
+  }
+
   public createExpressApp(): express.Application {
     const application: express.Application = express();
 
@@ -23,12 +31,15 @@ class App {
   }
 
   public start(port: number): void {
-    const appServer = this.createExpressApp();
-    appServer.listen(port, () => {
+    this.appServer = this.app.listen(port, () => {
       logger.info(`Application running on port: ${ port }`);
     });
   }
 
-}
+  public async stop(): Promise<void> {
+    this.appServer.close(() => {
+      logger.info('app server stoped');
+    });
+  }
 
-export const app = new App();
+}

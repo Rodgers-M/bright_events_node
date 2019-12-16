@@ -17,7 +17,10 @@
     "db:migrate:make": "env-cmd -e development ts-node -P ./tsconfig.json $(npm bin)/knex migrate:make -x ts --knexfile ./src/database/knexfile.ts",
     "db:migrate": "env-cmd -e development  ts-node -P ./tsconfig.json $(npm bin)/knex migrate:latest --knexfile ./src/database/knexfile.ts",
     "db:migrate:rollback": "env-cmd -e development ts-node -P ./tsconfig.json $(npm bin)/knex migrate:rollback --knexfile ./src/database/knexfile.ts",
-    "test": "npx env-cmd -e test npx jest  --config ./jest/integration.json --detectOpenHandles --runInBand --forceExit"
+    "test": "jest --coverage --no-cache  --detectOpenHandles --runInBand --forceExit",
+    "test:integration": "npx env-cmd -e test npx jest  --config ./jest/integration.json --detectOpenHandles --runInBand --forceExit",
+    "test:unit": "env-cmd -e test jest --config ./jest/unit.json"
+
   },
   "jest": {
     "verbose": true

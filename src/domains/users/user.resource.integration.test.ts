@@ -2,7 +2,7 @@ import { describeDbTestSuite } from '../../test/describeDbTestSuite';
 import { RawAccount } from './user.types';
 import { UserResource } from './user.resource';
 
-describeDbTestSuite('UserResource', (knexInstance) => {
+describeDbTestSuite('UserResource', () => {
   describe('create', () => {
     test('it should create a user', async () => {
       const createAccountBody = {

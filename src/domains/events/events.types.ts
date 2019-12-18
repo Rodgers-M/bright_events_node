@@ -41,8 +41,8 @@ export interface EventsFilter {
   createdBy?: string;
 
   dateGreaterThan?: string;
-  dateGreaterThanEqualTo?: string;
   dateLessThan?: string;
+  dateGreaterThanEqualTo?: string;
   dateLessThanEqualTo?: string;
 
   rsvpEndDateGreaterThan?: string;
@@ -52,8 +52,7 @@ export interface EventsFilter {
 }
 
 export enum EventsFilterFields {
-  TITTLE = 'tittle',
-  DESCRIPTION = 'description',
+  TITLE = 'title',
   LOCATION = 'location',
 }
 

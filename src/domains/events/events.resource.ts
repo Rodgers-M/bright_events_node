@@ -29,8 +29,37 @@ class EventsResourceSingleton implements EventsResource {
     return (query: knex.QueryBuilder): knex.QueryBuilder => query.where(field, value);
   }
 
-  private filterByDate(date: string): QueryBuilderFunction {
-    return (query: knex.QueryBuilder): knex.QueryBuilder => query.where('date', date);
+  private filterByDateEqualTo(dateField: string, date: string): QueryBuilderFunction {
+    return (query: knex.QueryBuilder): knex.QueryBuilder => query.where(dateField, date);
+  }
+
+  private getQueryBuilderFunctions(filterBody: EventsFilter): QueryBuilderFunction[] {
+    const filterQueryFunctions = [];
+    // const {
+      // rsvpEndDate,
+      // rsvpEndDateGreaterThan,
+      // rsvpEndDateGreaterThanEqualTo,
+      // rsvpEndDateLessThan,
+      // rsvpEndDateLessThanEqualTo,
+    // } = filterBody;
+
+    if (filterBody.location) {
+      filterQueryFunctions.push(this.filterbyField(EventsFilterFields.LOCATION, filterBody.location));
+    }
+
+    if(filterBody.tittle) {
+      filterQueryFunctions.push(this.filterbyField(EventsFilterFields.TITLE, filterBody.tittle));
+    }
+
+    if(filterBody.date) {
+      filterQueryFunctions.push(this.filterByDateEqualTo('date', filterBody.date));
+    }
+
+    if(filterBody.rsvpEndDate) {
+      filterQueryFunctions.push(this.filterByDateEqualTo('rsvpEndDate', filterBody.date));
+    }
+
+    return filterQueryFunctions;
   }
 
   public async create(eventBody: EventBody): Promise<Readonly<RawEventBody>> {
@@ -50,15 +79,10 @@ class EventsResourceSingleton implements EventsResource {
     return event;
   }
 
-  private double(x: number): number {
-    return x * 2;
-  }
-
   public async filterEvents(filterBody: EventsFilter): Promise<Readonly<RawEventBody[]>> {
     const baseQuey = knexInstance(EVENTS_TABLE);
-    const filterbyLocation = this.filterbyField(EventsFilterFields.LOCATION, filterBody.location);
-    const filterByDate = this.filterByDate('2018-12-12');
-    const  queryBuilder = pipe<knex.QueryBuilder>(filterbyLocation, filterByDate);
+    const queryBuilderFunctions = this.getQueryBuilderFunctions(filterBody);
+    const  queryBuilder = pipe<knex.QueryBuilder>(...queryBuilderFunctions);
     const query = queryBuilder(baseQuey);
     console.log(query.toString());
     return await query;

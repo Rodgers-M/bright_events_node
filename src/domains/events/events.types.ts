@@ -32,6 +32,7 @@ export interface UpdateEventBody {
 }
 
 export interface EventsFilter {
+  q?: string;
   tittle?: string;
   description?: string;
   location?: string;

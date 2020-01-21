@@ -23,7 +23,12 @@ interface EventsResource {
   delete(eventId: string): Promise<void>;
 }
 
-class EventsResourceSingleton implements EventsResource {
+class EventsResourceImplementation implements EventsResource {
+
+  private documentVector(queryString: string): QueryBuilderFunction {
+    return (query: knex.QueryBuilder): knex.QueryBuilder =>
+      query.whereRaw(`document @@ to_tsquery('${ queryString }')`);
+  }
 
   private filterbyField(field: EventsFilterFields, value: string): QueryBuilderFunction {
     return (query: knex.QueryBuilder): knex.QueryBuilder => query.where(field, value);
@@ -59,6 +64,10 @@ class EventsResourceSingleton implements EventsResource {
       filterQueryFunctions.push(this.filterByDateEqualTo('rsvpEndDate', filterBody.date));
     }
 
+    if(filterBody.q) {
+      filterQueryFunctions.push(this.documentVector(filterBody.q));
+    }
+
     return filterQueryFunctions;
   }
 
@@ -84,7 +93,6 @@ class EventsResourceSingleton implements EventsResource {
     const queryBuilderFunctions = this.getQueryBuilderFunctions(filterBody);
     const  queryBuilder = pipe<knex.QueryBuilder>(...queryBuilderFunctions);
     const query = queryBuilder(baseQuey);
-    console.log(query.toString());
     return await query;
   }
 
@@ -117,4 +125,4 @@ class EventsResourceSingleton implements EventsResource {
   }
 }
 
-export const EventsResource: EventsResource = new EventsResourceSingleton();
+export const EventsResource: EventsResource = new EventsResourceImplementation();

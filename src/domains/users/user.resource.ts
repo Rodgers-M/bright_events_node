@@ -10,7 +10,7 @@ interface UserResource {
   // getProfile(id: string): Promise<any>;
 }
 
-class UserResourceSingleton implements UserResource {
+class UserResourceImplementation implements UserResource {
   public async create(params: AccountBody): Promise<Readonly<RawAccount>> {
     const created: RawAccount[] = await knexInstance<RawAccount>(ACCOUNTS_TABLE)
       .insert(params, '*');
@@ -28,4 +28,4 @@ class UserResourceSingleton implements UserResource {
   }
 }
 
-export const UserResource: UserResource = new UserResourceSingleton();
+export const UserResource: UserResource = new UserResourceImplementation();

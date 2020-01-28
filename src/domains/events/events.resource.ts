@@ -16,7 +16,7 @@ const EVENTS_TABLE = 'events';
 
 interface EventsResource {
   create(eventBody: EventBody): Promise<Readonly<RawEventBody>>;
-  get(lookupKey: EventLookUpKey, value: string): Promise<Readonly<RawEventBody>>;
+  getEvent(lookupKey: EventLookUpKey, value: string): Promise<Readonly<RawEventBody>>;
   filterEvents(filterBody: EventsFilter): Promise<Readonly<RawEventBody[]>>;
   getAll(offset: number, limit: number): Promise<Readonly<RawEventBody[]>>;
   update(updateBody: UpdateEventBody, eventId: string): Promise<Readonly<RawEventBody>>;
@@ -77,7 +77,7 @@ class EventsResourceImplementation implements EventsResource {
     return created[0];
   }
 
-  public async get(lookupKey: EventLookUpKey, value: string): Promise<Readonly<RawEventBody>> {
+  public async getEvent(lookupKey: EventLookUpKey, value: string): Promise<Readonly<RawEventBody>> {
     const event = knexInstance<RawEventBody>(EVENTS_TABLE)
       .where(lookupKey, value)
       .first();

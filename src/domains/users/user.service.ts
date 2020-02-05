@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { AccountBody, AccountLookupKey, AccountResponse } from './user.types';
+import { AccountBody, AccountLookupKey, AccountResponse, RawAccount } from './user.types';
 import { UserResource } from './user.resource';
 import { BrightEventsError } from '../../lib/util/brightEvents.error';
 import { createToken } from '../../lib/helpers/jwtHelper';
@@ -9,6 +9,7 @@ const SALT_ROUNDS = 10;
 interface UserService {
   create(params: AccountBody): Promise<Readonly<AccountResponse>>;
   login(credentials: AccountBody): Promise<AccountResponse>;
+  getUser(lookupKey: AccountLookupKey, value: string ): Promise<Readonly<RawAccount>>;
   // updateProfile(profileData: any): Promise<any>;
   // getProfile(id: string): Promise<any>;
 }
@@ -20,6 +21,11 @@ class UserServiceImplementation implements UserService {
 
   private async comparePasswordHash(inputPassword: string, hashedPassword: string): Promise<boolean> {
     return bcrypt.compare(inputPassword, hashedPassword);
+  }
+
+  public async getUser(lookupKey: AccountLookupKey, value: string): Promise<Readonly<RawAccount>> {
+    const account: RawAccount = await UserResource.getUser(lookupKey, value);
+    return account;
   }
 
   public async create(params: AccountBody): Promise<Readonly<AccountResponse>> {

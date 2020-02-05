@@ -2,9 +2,12 @@ import express from 'express';
 import morgan from 'morgan';
 import passport from 'passport';
 import { Server } from 'http';
-import applyRoutes from './index.route';
+import graphqlHTTP from 'express-graphql';
+import expressPlayground from 'graphql-playground-middleware-express';
+// import applyRoutes from './index.route';
 import { LoggerStream, logger } from './shared/logger';
 import { globalErrorHandler } from './lib/middlewares/globalErrorHandler';
+import { schema } from './index.schema';
 
 export class App {
   private appServer: Server;
@@ -24,7 +27,14 @@ export class App {
     }
 
     application.use(passport.initialize());
-    applyRoutes(application);
+    // applyRoutes(application);
+    application.use('/graphql', graphqlHTTP({
+      schema,
+      graphiql: false,
+    }));
+
+    application.get('/playground', expressPlayground({ endpoint: '/graphql' }));
+
     application.use(globalErrorHandler(logger));
 
     return application;

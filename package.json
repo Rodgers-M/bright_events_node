@@ -20,7 +20,6 @@
     "test": "jest --coverage --no-cache  --detectOpenHandles --runInBand --forceExit",
     "test:integration": "npx env-cmd -e test npx jest  --config ./jest/integration.json --detectOpenHandles --runInBand --forceExit",
     "test:unit": "env-cmd -e test jest --config ./jest/unit.json"
-
   },
   "jest": {
     "verbose": true
@@ -38,6 +37,9 @@
     "dot-env": "0.0.1",
     "env-cmd": "^10.0.1",
     "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^14.6.0",
+    "graphql-playground-middleware-express": "^1.7.12",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.5",
     "knex-stringcase": "^1.3.0",

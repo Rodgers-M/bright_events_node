@@ -1,5 +1,6 @@
 import { GraphQLObjectType, GraphQLString, GraphQLID } from 'graphql';
 
+// graphql types
 export const UserType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
@@ -10,6 +11,14 @@ export const UserType = new GraphQLObjectType({
   })
 });
 
+export const CreatedUserType = new GraphQLObjectType({
+  name: 'CreatedUser',
+  fields: () => ({
+    token: { type: GraphQLString },
+  })
+});
+
+// interfaces
 export interface AccountBody {
   email: string;
   password: string;

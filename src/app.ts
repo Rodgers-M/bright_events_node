@@ -4,10 +4,10 @@ import passport from 'passport';
 import { Server } from 'http';
 import graphqlHTTP from 'express-graphql';
 import expressPlayground from 'graphql-playground-middleware-express';
-// import applyRoutes from './index.route';
 import { LoggerStream, logger } from './shared/logger';
 import { globalErrorHandler } from './lib/middlewares/globalErrorHandler';
 import { schema } from './index.schema';
+import { BrightEventsError } from './lib/util/brightEvents.error';
 
 export class App {
   private appServer: Server;
@@ -27,12 +27,16 @@ export class App {
     }
 
     application.use(passport.initialize());
-    // applyRoutes(application);
     application.use('/graphql', graphqlHTTP({
       schema,
       graphiql: false,
+      customFormatErrorFn: (error) => {
+        const originalError = error.originalError as BrightEventsError;
+        return { message: error.message, statusCode : originalError.statusCode || 500};
+      }
     }));
 
+    // TODO: disable playground on production environment
     application.get('/playground', expressPlayground({ endpoint: '/graphql' }));
 
     application.use(globalErrorHandler(logger));

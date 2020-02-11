@@ -35,7 +35,7 @@ export const handleSignals = (logger: winston.Logger, app: App ): void => {
   });
 
   process.on('unhandledRejection', (reason, promise) => {
-    logger.info('unhandled Rejection at:', promise, 'reason', reason);
+    logger.info(`unhandled Rejection at: ${ promise }, reason  ${ reason }`);
     shutdown(1);
   });
 };

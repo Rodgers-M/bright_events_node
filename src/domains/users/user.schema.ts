@@ -1,12 +1,14 @@
 import { GraphQLID, GraphQLString } from 'graphql';
 import { UserType, RawAccount, AccountLookupKey, CreatedUserType, AccountBody } from './user.types';
 import { UserService } from './user.service';
+import { Request } from 'express';
 
 export const userQueryFields = {
   user: {
     type: UserType,
     args: { id: { type: GraphQLID } },
-    async resolve(parent: RawAccount, args: { id: string }) {
+    async resolve(parent: RawAccount, args: { id: string }, context: { request: Request }) {
+      const reqUser = context.request.user as any;
       const user: RawAccount  =  await UserService.getUser(AccountLookupKey.ID, args.id);
       return user;
     }

@@ -3,6 +3,7 @@ import { AccountBody, AccountLookupKey, AccountResponse, RawAccount } from './us
 import { UserResource } from './user.resource';
 import { BrightEventsError } from '../../lib/util/brightEvents.error';
 import { createToken } from '../../lib/helpers/jwtHelper';
+import { getConfig } from '../../config/config';
 
 const SALT_ROUNDS = 10;
 
@@ -36,7 +37,8 @@ class UserServiceImplementation implements UserService {
     }
     const encryptedPassword = this.encryptPassword(password);
     const createdUser = await UserResource.create({ ...params, password: encryptedPassword });
-    const token = createToken({ id: createdUser.id }, 'secretKey', { expiresIn: '5h' } );
+    const { expiresIn, secretKey } = getConfig().jwt;
+    const token = createToken({ id: createdUser.id }, secretKey,  expiresIn );
     return { message: 'account created successfuly', token };
   }
 
@@ -51,7 +53,9 @@ class UserServiceImplementation implements UserService {
     if(!isPasswordValid) {
       throw new BrightEventsError('wrong email or password', 401);
     }
-    const token = createToken({ id: user.id }, 'secretKey', { expiresIn: '5h' } );
+
+    const { expiresIn, secretKey } = getConfig().jwt;
+    const token = createToken({ id: user.id }, secretKey, expiresIn );
     return { message: 'login successfuly', token };
 
   }

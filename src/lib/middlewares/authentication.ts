@@ -8,13 +8,13 @@ export function auth(req: Request, res: Response, next: NextFunction) {
   if(req.headers.authorization) {
     const bearerString: string = req.headers.authorization;
     const token = getTokenFromBearerString(bearerString);
-    const { secretKey } = getConfig().jwt;
+    const { secretKey, expiresIn } = getConfig().jwt;
     try {
-      const payload = jwt.verify(token, secretKey);
+      const payload = jwt.verify(token, secretKey, { maxAge: expiresIn});
       req.user = payload;
-      logger.info('token payload', payload);
+      logger.info('payload', payload);
     } catch(error) {
-      logger.info('error decoding token ', error.message);
+      logger.info(`token error message, ${error.message}`);
     }
   }
   next();

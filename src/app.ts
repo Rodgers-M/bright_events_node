@@ -8,6 +8,7 @@ import { LoggerStream, logger } from './shared/logger';
 import { globalErrorHandler } from './lib/middlewares/globalErrorHandler';
 import { schema } from './index.schema';
 import { BrightEventsError } from './lib/util/brightEvents.error';
+import { auth } from './lib/middlewares/authentication';
 
 export class App {
   private appServer: Server;
@@ -27,14 +28,17 @@ export class App {
     }
 
     application.use(passport.initialize());
-    application.use('/graphql', graphqlHTTP({
+    application.use('/graphql', auth, graphqlHTTP( (request, response, graphqlParams) => ({
       schema,
+      context: {
+        request
+      },
       graphiql: false,
       customFormatErrorFn: (error) => {
         const originalError = error.originalError as BrightEventsError;
         return { message: error.message, statusCode : originalError.statusCode || 500};
       }
-    }));
+    })));
 
     // TODO: disable playground on production environment
     application.get('/playground', expressPlayground({ endpoint: '/graphql' }));

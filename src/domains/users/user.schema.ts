@@ -1,5 +1,5 @@
 import { GraphQLID, GraphQLString } from 'graphql';
-import { UserType, RawAccount, AccountLookupKey, CreatedUserType, AccountBody } from './user.types';
+import { UserType, RawAccount, AccountLookupKey, CreatedUserType, AccountBody, LoginUserType } from './user.types';
 import { UserService } from './user.service';
 import { Request } from 'express';
 
@@ -28,6 +28,17 @@ export const userMutationFields = {
         password: args.password,
       });
       return createdUser;
+    }
+  },
+  loginUser: {
+    type: LoginUserType,
+    args: {
+      email: { type: GraphQLString },
+      password: { type: GraphQLString }
+    },
+    async resolve(parent: RawAccount, args: AccountBody) {
+      const response = await UserService.login(args);
+      return response;
     }
   }
 };

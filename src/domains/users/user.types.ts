@@ -18,6 +18,14 @@ export const CreatedUserType = new GraphQLObjectType({
   })
 });
 
+export const LoginUserType = new GraphQLObjectType({
+  name: 'LoginUser',
+  fields: () => ({
+    token: { type: GraphQLString },
+    message: { type: GraphQLString }
+  })
+});
+
 // interfaces
 export interface AccountBody {
   email: string;

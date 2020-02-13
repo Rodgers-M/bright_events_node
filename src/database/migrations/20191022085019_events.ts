@@ -36,7 +36,8 @@ async function addDocumentPopulationTrigger(knex: Knex, tableName: string) {
 async function createEventsTable(knex: Knex): Promise<void> {
   await knex.schema.createTable(EVENTS_TABLE_NAME, (table: Knex.CreateTableBuilder): void => {
     table.string('id')
-      .primary();
+      .primary()
+      .defaultTo(knex.raw('uuid_generate_v4()'));
 
     table.string('title')
       .notNullable();

@@ -22,7 +22,7 @@ export const userMutationFields = {
       email: { type: GraphQLString },
       password: { type: GraphQLString }
     },
-    async resolve(parent: RawAccount, args: AccountBody) {
+    async resolve(parent: any, args: AccountBody) {
       const createdUser = await UserService.create({
         email: args.email,
         password: args.password,
@@ -36,7 +36,7 @@ export const userMutationFields = {
       email: { type: GraphQLString },
       password: { type: GraphQLString }
     },
-    async resolve(parent: RawAccount, args: AccountBody) {
+    async resolve(parent: any, args: AccountBody) {
       const response = await UserService.login(args);
       return response;
     }

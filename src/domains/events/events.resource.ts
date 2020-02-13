@@ -52,8 +52,8 @@ class EventsResourceImplementation implements EventsResource {
       filterQueryFunctions.push(this.filterbyField(EventsFilterFields.LOCATION, filterBody.location));
     }
 
-    if(filterBody.tittle) {
-      filterQueryFunctions.push(this.filterbyField(EventsFilterFields.TITLE, filterBody.tittle));
+    if(filterBody.title) {
+      filterQueryFunctions.push(this.filterbyField(EventsFilterFields.TITLE, filterBody.title));
     }
 
     if(filterBody.date) {

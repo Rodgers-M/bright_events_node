@@ -16,7 +16,8 @@ const envVarsSchema = joi
   DATABASE_URL: joi.string().default(null),
   DB_HOST: joi.string().required(),
   SECRET_KEY: joi.string().required(),
-  JWT_EXPIRATION: joi.string().default('1h')
+  JWT_EXPIRATION: joi.number().default(1),
+  JWT_EXPIRATION_UNIT: joi.string().allow(['seconds', 'minutes', 'hours', 'days', 'months']).default('hours')
 })
 .unknown()
 .required();
@@ -35,7 +36,8 @@ export interface AppConfig {
   };
   jwt: {
     secretKey: string;
-    expiresIn: string;
+    expiresIn: number;
+    expirationUnit: string;
   };
 }
 
@@ -62,6 +64,7 @@ export const getConfig = () => {
       jwt: {
         secretKey: envVars.SECRET_KEY,
         expiresIn: envVars.JWT_EXPIRATION,
+        expirationUnit: envVars.JWT_EXPIRATION_UNIT,
       }
     };
   }

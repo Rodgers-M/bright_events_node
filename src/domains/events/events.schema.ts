@@ -1,7 +1,8 @@
 import { EventsService } from './events.service';
+import { Request } from 'express';
 import { EventLookUpKey, CreateEventBody } from './events.types';
-import {UserService} from '../users/user.service';
-import {AccountLookupKey} from '../users/user.types';
+import { UserService } from '../users/user.service';
+import { AccountLookupKey } from '../users/user.types';
 
 export const eventTypeDefs = `
   type Event {
@@ -29,7 +30,6 @@ export const eventTypeDefs = `
     date: String
     time: String
     rsvpEndDate: String
-    createdBy: String
   }
 
   extend type Mutation {
@@ -46,8 +46,12 @@ export const eventResolvers = {
   },
 
   Mutation: {
-    async createEvent(_: any, { createEventInput }: { createEventInput: CreateEventBody }) {
-      const createdEvent = await EventsService.create(createEventInput);
+    async createEvent(
+      _: any,
+      { createEventInput }: { createEventInput: CreateEventBody },
+      context: { request: Request },
+    ) {
+      const createdEvent = await EventsService.create(createEventInput, context.request);
       return createdEvent;
     }
   },

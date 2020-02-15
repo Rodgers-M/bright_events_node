@@ -1,23 +1,18 @@
-import { GraphQLObjectType, GraphQLSchema } from 'graphql';
-import { userQueryFields, userMutationFields } from './domains/users/user.schema';
-import { eventsMutationFields } from './domains/events/events.schema';
+import { makeExecutableSchema } from 'graphql-tools';
+import { merge } from 'lodash';
+import { userTypeDefs, userResolvers } from './domains/users/user.schema';
+import { eventTypeDefs, eventResolvers } from './domains/events/events.schema';
 
-const RootQuery = new GraphQLObjectType({
-  name: 'RootQueryType',
-  fields: {
-    ...userQueryFields,
+const rootTypeDefs = `
+  type Query
+  type Mutation
+  schema {
+    query: Query
+    mutation: Mutation
   }
-});
+`;
 
-const RootMutation = new GraphQLObjectType({
-  name: 'RootMutation',
-  fields: {
-    ...eventsMutationFields,
-    ...userMutationFields,
-  }
-});
-
-export const schema = new GraphQLSchema({
-  query: RootQuery,
-  mutation: RootMutation
+export const schema = makeExecutableSchema({
+  typeDefs: [ rootTypeDefs, userTypeDefs, eventTypeDefs ],
+  resolvers: merge(userResolvers, eventResolvers)
 });

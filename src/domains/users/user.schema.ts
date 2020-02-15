@@ -1,43 +1,47 @@
-import { GraphQLID, GraphQLString } from 'graphql';
-import { UserType, RawAccount, AccountLookupKey, CreatedUserType, AccountBody, LoginUserType } from './user.types';
+import { AccountLookupKey, AccountBody } from './user.types';
 import { UserService } from './user.service';
-import { Request } from 'express';
 
-export const userQueryFields = {
-  user: {
-    type: UserType,
-    args: { id: { type: GraphQLID } },
-    async resolve(parent: RawAccount, args: { id: string }, context: { request: Request }) {
-      const reqUser = context.request.user as any;
-      const user: RawAccount  =  await UserService.getUser(AccountLookupKey.ID, args.id);
-      return user;
-    }
+export const userTypeDefs = `
+  type User {
+    id: ID
+    email: String
+    password: String
   }
-};
 
-export const userMutationFields = {
-  createUser: {
-    type: CreatedUserType,
-    args: {
-      email: { type: GraphQLString },
-      password: { type: GraphQLString }
+  type UserAccountResponse {
+    message: String
+    token: String
+  }
+
+  input AccountInput {
+    email: String!
+    password: String!
+  }
+
+  extend type Query {
+    user(id: String): User
+  }
+
+  extend type Mutation {
+    createUserAccount(createAccountInput: AccountInput!): UserAccountResponse
+    loginUser(loginUserInput: AccountInput!): UserAccountResponse
+  }
+`;
+
+export const userResolvers = {
+  Query: {
+    async user(_: any, { id }: { id: string }) {
+      const user = await UserService.getUser(AccountLookupKey.ID, id);
+      return user;
     },
-    async resolve(parent: any, args: AccountBody) {
-      const createdUser = await UserService.create({
-        email: args.email,
-        password: args.password,
-      });
-      return createdUser;
-    }
   },
-  loginUser: {
-    type: LoginUserType,
-    args: {
-      email: { type: GraphQLString },
-      password: { type: GraphQLString }
+  Mutation: {
+    async createUserAccount(_: any, { createAccountInput }: { createAccountInput: AccountBody } ) {
+      const createdAccount = await UserService.create(createAccountInput);
+      return createdAccount;
     },
-    async resolve(parent: any, args: AccountBody) {
-      const response = await UserService.login(args);
+    async loginUser(_: any, { loginUserInput }: { loginUserInput: AccountBody }) {
+      const response = await UserService.login(loginUserInput);
       return response;
     }
   }

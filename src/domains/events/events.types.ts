@@ -1,4 +1,5 @@
 import * as knex from 'knex';
+
 export interface CreateEventBody {
   title: string;
   description: string;

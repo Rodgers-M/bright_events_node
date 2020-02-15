@@ -35,8 +35,13 @@ export class App {
       },
       graphiql: false,
       customFormatErrorFn: (error) => {
-        const originalError = error.originalError as BrightEventsError;
-        return { message: error.message, statusCode : originalError.statusCode || 500};
+        let statusCode: number;
+        let originalError: BrightEventsError;
+        if(error.originalError) {
+          originalError = error.originalError as BrightEventsError;
+          statusCode =  originalError.statusCode || 500;
+        }
+        return { message: error.message, statusCode };
       }
     })));
 

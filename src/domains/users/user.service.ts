@@ -4,7 +4,6 @@ import { UserResource } from './user.resource';
 import { BrightEventsError } from '../../lib/util/brightEvents.error';
 import { createToken } from '../../lib/helpers/jwtHelper';
 import { getConfig } from '../../config/config';
-import moment = require('moment');
 
 const SALT_ROUNDS = 10;
 

@@ -78,11 +78,13 @@ async function createRsvpsTable(knex: Knex): Promise<void> {
     table.string('account_id')
       .references('id')
       .inTable(ACCOUNTS_TABLE_NAME)
+      .onDelete('CASCADE')
       .notNullable();
 
     table.string('event_id')
       .references('id')
       .inTable(EVENTS_TABLE_NAME)
+      .onDelete('CASCADE')
       .notNullable();
 
     table.boolean('attended')

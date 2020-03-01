@@ -16,6 +16,7 @@ export const eventTypeDefs = `
     rsvpEndDate: String
     createdBy: String
     author: User
+    attendees: [ User ]
   }
 
   input EventLookUp {
@@ -50,7 +51,7 @@ export const eventTypeDefs = `
 
   extend type Query {
     event(id: String): Event
-    allEvents(eventsFilter: EventsFilter) : [Event]
+    allEvents(offset: Int, limit: Int, eventsFilter: EventsFilter) : [Event]
   }
 
   extend type Mutation {
@@ -96,6 +97,11 @@ export const eventResolvers = {
     async author(event: { createdBy: string }) {
       const author = await UserService.getUser(AccountLookupKey.ID, event.createdBy);
       return author;
+    },
+
+    async attendees( event: { id: string } ) {
+      const attendees = await EventsService.getAttendees(event.id);
+      return attendees;
     }
   }
 };

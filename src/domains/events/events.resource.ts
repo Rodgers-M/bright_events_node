@@ -13,6 +13,8 @@ import { EventNotFountError } from './events.errors';
 import { pipe } from '../../lib/util/functionalUtils';
 
 const EVENTS_TABLE = 'events';
+const RSVPS_TABLE = 'rsvps';
+const ACCOUNTS_TABLE = 'accounts';
 
 interface EventsResource {
   create(eventBody: EventBody): Promise<Readonly<RawEventBody>>;
@@ -21,6 +23,7 @@ interface EventsResource {
   getAll(offset: number, limit: number): Promise<Readonly<RawEventBody[]>>;
   update(updateBody: UpdateEventBody, eventId: string): Promise<Readonly<RawEventBody>>;
   delete(eventId: string): Promise<void>;
+  getAttendees(eventId: string): Promise<Readonly<any>>;
 }
 
 class EventsResourceImplementation implements EventsResource {
@@ -122,6 +125,14 @@ class EventsResourceImplementation implements EventsResource {
     await knexInstance<RawEventBody>(EVENTS_TABLE)
       .delete()
       .where('id', eventId);
+  }
+
+  public async getAttendees(eventId: string): Promise<Readonly<any>> {
+    const attendees= await knexInstance(RSVPS_TABLE)
+      .select('*')
+      .innerJoin(ACCOUNTS_TABLE, `${ACCOUNTS_TABLE}.id`, `${RSVPS_TABLE}.account_id`)
+      .where(`${RSVPS_TABLE}.event_id`, eventId);
+    return attendees;
   }
 }
 

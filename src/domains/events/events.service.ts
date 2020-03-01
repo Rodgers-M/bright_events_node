@@ -12,6 +12,7 @@ interface EventsService {
   filterEvents(filterBody: EventsFilter): Promise<Readonly<RawEventBody[]>>;
   updatedEvent(updateBody: UpdateEventBody, request: Request): Promise<Readonly<RawEventBody>>;
   deleteEvent(eventId: string): Promise<string>;
+  getAttendees(eventId: string): Promise<Readonly<any>>;
 }
 
 interface RequestUser {
@@ -71,6 +72,11 @@ class EventsServiceImplementation implements EventsService {
   public async deleteEvent(eventId: string): Promise<string> {
     await EventsResource.delete(eventId);
     return `event with id ${eventId} deleted successfuly`;
+  }
+
+  public async getAttendees(eventId: string): Promise<Readonly<any>> {
+    const attendees = await EventsResource.getAttendees(eventId);
+    return attendees;
   }
 }
 

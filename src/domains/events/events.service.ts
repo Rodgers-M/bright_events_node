@@ -1,15 +1,17 @@
 import shortUuid from 'short-uuid';
 import { Request } from 'express';
 
-import { EventsFilter, RawEventBody, EventLookUpKey, CreateEventBody } from './events.types';
+import { EventsFilter, RawEventBody, EventLookUpKey, CreateEventBody, UpdateEventBody } from './events.types';
 import { EventsResource } from './events.resource';
-import {BrightEventsError} from '../../lib/util/brightEvents.error';
+import { BrightEventsError } from '../../lib/util/brightEvents.error';
 
 interface EventsService {
-  get(filterBody?: EventsFilter): Promise<Readonly<RawEventBody | RawEventBody[]>>;
+  get(offset?: number, limit?: number, filterBody?: EventsFilter): Promise<Readonly<RawEventBody | RawEventBody[]>>;
   create(createEventBody: CreateEventBody, request: Request): Promise<Readonly<RawEventBody>>;
   getEvent(lookup: EventLookUpKey, value: string): Promise<Readonly<RawEventBody>>;
   filterEvents(filterBody: EventsFilter): Promise<Readonly<RawEventBody[]>>;
+  updatedEvent(updateBody: UpdateEventBody, request: Request): Promise<Readonly<RawEventBody>>;
+  deleteEvent(eventId: string): Promise<string>;
 }
 
 interface RequestUser {
@@ -39,9 +41,15 @@ class EventsServiceImplementation implements EventsService {
     return createdEvent;
   }
 
-  public async get(filterBody?: EventsFilter): Promise<Readonly<RawEventBody | RawEventBody[]>> {
+  public async get(
+    offset = 0,
+    limit = 100,
+    filterBody?: EventsFilter,
+  ): Promise<Readonly<RawEventBody | RawEventBody[]>> {
     if(filterBody) {
       return EventsResource.filterEvents(filterBody);
+    } else {
+      return EventsResource.getAll(offset, limit);
     }
   }
 
@@ -53,6 +61,16 @@ class EventsServiceImplementation implements EventsService {
   public async filterEvents(filterBody: EventsFilter): Promise<Readonly<RawEventBody[]>> {
     const events = await EventsResource.filterEvents(filterBody);
     return events;
+  }
+
+  public async updatedEvent(updateBody: UpdateEventBody): Promise<Readonly<RawEventBody>> {
+    const updatedEvent = await EventsResource.update(updateBody, updateBody.id );
+    return updatedEvent;
+  }
+
+  public async deleteEvent(eventId: string): Promise<string> {
+    await EventsResource.delete(eventId);
+    return `event with id ${eventId} deleted successfuly`;
   }
 }
 

@@ -1,6 +1,6 @@
 import { EventsService } from './events.service';
 import { Request } from 'express';
-import { EventLookUpKey, CreateEventBody } from './events.types';
+import { EventLookUpKey, CreateEventBody, UpdateEventBody, EventsFilter } from './events.types';
 import { UserService } from '../users/user.service';
 import { AccountLookupKey } from '../users/user.types';
 
@@ -18,13 +18,24 @@ export const eventTypeDefs = `
     author: User
   }
 
-  extend type Query {
-    event(id: String): Event
+  input EventLookUp {
+    id: String
+
   }
 
+
   input EventInput {
+    title: String!
+    description: String!
+    location: String!
+    date: String!
+    time: String!
+    rsvpEndDate: String!
+  }
+
+  input UpdateEventInput {
+    id: ID!
     title: String
-    slug: String
     description: String
     location: String
     date: String
@@ -32,8 +43,19 @@ export const eventTypeDefs = `
     rsvpEndDate: String
   }
 
+  input EventsFilter {
+    offset: Int
+    limit: Int
+  }
+
+  extend type Query {
+    event(id: String): Event
+    allEvents(eventsFilter: EventsFilter) : [Event]
+  }
+
   extend type Mutation {
     createEvent(createEventInput: EventInput): Event
+    updatedEvent(createEventInput: UpdateEventInput): Event
   }
 `;
 
@@ -42,6 +64,13 @@ export const eventResolvers = {
     async event(_: any, { id }: { id: string }) {
       const event = await EventsService.getEvent(EventLookUpKey.ID, id);
       return event;
+    },
+    async allEvents(
+      _: any,
+      { offset, limit , eventsFilter }: { offset: number, limit: number, eventsFilter: EventsFilter },
+    ) {
+      const allEvents = await EventsService.get(offset, limit, eventsFilter);
+      return allEvents;
     }
   },
 
@@ -53,6 +82,14 @@ export const eventResolvers = {
     ) {
       const createdEvent = await EventsService.create(createEventInput, context.request);
       return createdEvent;
+    },
+    async updatedEvent(
+      _: any,
+      { updatedEventInput }: { updatedEventInput: UpdateEventBody },
+      context: { request: Request },
+    ) {
+      const updatedEvent = await EventsService.updatedEvent(updatedEventInput, context.request);
+      return updatedEvent;
     }
   },
   Event: {

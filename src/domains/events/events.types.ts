@@ -31,6 +31,7 @@ export enum EventLookUpKey {
 }
 
 export interface UpdateEventBody {
+  id: string;
   title?: string;
   slug?: string;
   description?: string;
@@ -42,6 +43,8 @@ export interface UpdateEventBody {
 }
 
 export interface EventsFilter {
+  offset?: number;
+  limit?: number;
   q?: string;
   title?: string;
   description?: string;

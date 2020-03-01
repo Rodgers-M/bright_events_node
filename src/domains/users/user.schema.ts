@@ -5,7 +5,6 @@ export const userTypeDefs = `
   type User {
     id: ID
     email: String
-    password: String
   }
 
   type UserAccountResponse {

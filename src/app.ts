@@ -28,7 +28,7 @@ export class App {
     }
 
     application.use(passport.initialize());
-    application.use('/graphql', auth, graphqlHTTP( (request, response, graphqlParams) => ({
+    application.use('/brightEvents', auth, graphqlHTTP( (request, response, graphqlParams) => ({
       schema,
       context: {
         request
@@ -46,7 +46,7 @@ export class App {
     })));
 
     // TODO: disable playground on production environment
-    application.get('/playground', expressPlayground({ endpoint: '/graphql' }));
+    application.get('/playground', expressPlayground({ endpoint: '/brightEvents' }));
 
     application.use(globalErrorHandler(logger));
 

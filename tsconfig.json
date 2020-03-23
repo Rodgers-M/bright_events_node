@@ -2,21 +2,16 @@
  "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es6",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "@events/database/*": ["src/database/*"],
-      "@events/lib/*": ["src/lib/*"],
-      "@events/config/*": ["src/config/*"],
-      "@events/shared/*": ["src/shared/*"]
-    }
+    "baseUrl": "./src"
  }
 }
 

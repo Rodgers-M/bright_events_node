@@ -4,6 +4,7 @@ import { UserResource } from './user.resource';
 import { BrightEventsError } from '../../lib/util/brightEvents.error';
 import { createToken } from '../../lib/helpers/jwtHelper';
 import { getConfig } from '../../config/config';
+import { sendSms } from '../../lib/messaging/sms';
 
 const SALT_ROUNDS = 10;
 
@@ -39,10 +40,12 @@ class UserServiceImplementation implements UserService {
     const createdUser = await UserResource.create({ ...params, password: encryptedPassword });
     const { secretKey } = getConfig().jwt;
     const token = createToken({ id: createdUser.id }, secretKey);
+    await sendSms({to: '+254704652948', message: 'thanks for login'});
     return { message: 'account created successfuly', token };
   }
 
   public async login(accountCredentials: AccountBody): Promise<AccountResponse> {
+    console.log('login function called');
     const { email, password } = accountCredentials;
     const user = await UserResource.getUser(AccountLookupKey.EMAIL, email);
     if(!user) {
@@ -56,6 +59,8 @@ class UserServiceImplementation implements UserService {
 
     const { secretKey } = getConfig().jwt;
     const token = createToken({ id: user.id }, secretKey);
+    console.log('sending sms');
+    await sendSms({to: '+254704652948', from: 'GRIFFIN',  message: 'thanks for login'});
     return { message: 'login successfuly', token };
 
   }

@@ -9,6 +9,7 @@ import { globalErrorHandler } from './lib/middlewares/globalErrorHandler';
 import { schema } from './index.schema';
 import { BrightEventsError } from './lib/util/brightEvents.error';
 import { auth } from './lib/middlewares/authentication';
+import { sendSms } from './lib/messaging/sms';
 
 export class App {
   private appServer: Server;
@@ -28,6 +29,7 @@ export class App {
     }
 
     application.use(passport.initialize());
+
     application.use('/brightEvents', auth, graphqlHTTP( (request, response, graphqlParams) => ({
       schema,
       context: {
@@ -46,6 +48,7 @@ export class App {
     })));
 
     // TODO: disable playground on production environment
+
     application.get('/playground', expressPlayground({ endpoint: '/brightEvents' }));
 
     application.use(globalErrorHandler(logger));
@@ -55,7 +58,7 @@ export class App {
 
   public start(port: number): void {
     this.appServer = this.app.listen(port, () => {
-      logger.info(`Application running on port: ${ port }`);
+      logger.info('app server', port);
     });
   }
 

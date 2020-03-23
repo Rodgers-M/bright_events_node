@@ -40,6 +40,7 @@ export const userResolvers = {
       return createdAccount;
     },
     async loginUser(_: any, { loginUserInput }: { loginUserInput: AccountBody }) {
+      console.log('initialize login');
       const response = await UserService.login(loginUserInput);
       return response;
     }

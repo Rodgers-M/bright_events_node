@@ -8,6 +8,11 @@
  "extends": [
      "tslint:recommended"
  ],
+ "linterOptions": {
+   "exclude": [
+      "coverage"
+   ]
+ },
  "jsRules": {},
  "rules": {
      "trailing-comma": [ false ],
@@ -16,7 +21,11 @@
      "interface-name": [true, "never-prefix"],
      "member-ordering": [ false ],
      "ordered-imports": [ false ],
-     "whitespace": [ true, "check-module" ]
+     "whitespace": [ true, "check-module" ],
+     "no-console": {
+       "severity": "warning",
+       "options": ["info", "log"]
+     }
  },
  "rulesDirectory": []
 }

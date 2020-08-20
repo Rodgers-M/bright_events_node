@@ -33,7 +33,7 @@
     "africastalking": "^0.4.5",
     "app-root-path": "^2.2.1",
     "babel-jest": "^24.9.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "dot-env": "0.0.1",
     "env-cmd": "^10.0.1",
     "express": "^4.17.1",
